@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model Empresa {
+  empresa_id String @id @default(uuid())
+  email String @unique
+  name String 
+
+  usuario Usuario[]
+  vendaDiaria caixaDiario[]
+}
+
+model Usuario {
+  usuario_id String @id @default(uuid())
+
+  userName    String @unique
+  password String
+
+  name String
+  empresa_id String 
+
+  empresa Empresa @relation(fields: [empresa_id], references: [empresa_id])
+
+  vendaDiaria caixaDiario[]
+  clientes Clientes[]
+  produtos Produtos[]
+  comprasCliente ComprasCliente[]
+  itensCompra ItensCompra[]
+}
+
+model caixaDiario{
+
+  caixa_id String @id @default(uuid())
+  valorCartao Float
+  valorDinheiro Float
+  valorPix Float
+  troco Float
+  dataLancamento DateTime @default(now())
+  empresa_id String
+  usuario_id String
+
+  company Empresa @relation(fields: [empresa_id], references: [empresa_id])
+  user Usuario @relation(fields: [usuario_id], references: [usuario_id])
+
+}
+
+
+model Produtos {
+  produto_id   String @id @default(uuid())
+  nome_produto String
+  preco        Float?
+  status       Boolean @default(true)
+  usuario_id   String
+
+  cliente      Usuario  @relation(fields: [usuario_id], references: [usuario_id])
+  ItensCompra  ItensCompra[]
+}
+
+
+
+
+
+model Clientes {
+  cliente_id String @id @default(uuid())
+  nome       String
+  cpf        String?
+  telefone   String?
+  endereco   String?
+  usuario_id String
+
+  user Usuario @relation(fields: [usuario_id], references: [usuario_id])
+  Compras    ComprasCliente[]
+}
+
+
+model ComprasCliente {
+  compra_id   String @id @default(uuid())
+  cliente_id  String
+  data_compra DateTime
+  usuario_id String
+
+  usuario Usuario @relation(fields: [usuario_id], references: [usuario_id])
+  cliente     Clientes  @relation(fields: [cliente_id], references: [cliente_id])
+  ItensCompra ItensCompra[]
+}
+
+
+
+model ItensCompra {
+  item_id        String @id @default(uuid())
+  compra_id      String
+  produto_id     String
+  usuario_id     String
+  quantidade     Int
+  preco_unitario Float
+
+  usuario Usuario @relation(fields: [usuario_id], references: [usuario_id])
+  comprasCliente        ComprasCliente  @relation(fields: [compra_id], references: [compra_id])
+  produto       Produtos @relation(fields: [produto_id], references: [produto_id])
+}

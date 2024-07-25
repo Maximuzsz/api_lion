@@ -1,35 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ProdutosService } from './produtos.service';
-import { CreateProdutoDto } from './dto/create-produto.dto';
-import { UpdateProdutoDto } from './dto/update-produto.dto';
+import { Body, Get, Param } from '@nestjs/common';
 import { ProdutoDecorator } from './decorators/produto-decorator';
+import { ProdutoCreateDecorator } from './decorators/produto-decorator-create';
+import { CreateProdutoDto } from './dto/create-produto.dto';
+import { ProdutosService } from './produtos.service';
+import { ProddutoDecoratorUpdate } from './decorators/produto-decorator-update';
+import { UpdateProdutoDto } from './dto/update-produto.dto';
 
 @ProdutoDecorator()
 export class ProdutosController {
   constructor(private readonly produtosService: ProdutosService) {}
 
-  @Post()
+
+  @ProdutoCreateDecorator()
   create(@Body() createProdutoDto: CreateProdutoDto) {
     return this.produtosService.create(createProdutoDto);
   }
 
   @Get()
-  findAll() {
-    return this.produtosService.findAll();
+  getAll() {
+    return this.produtosService.getAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.produtosService.findOne(+id);
+  @Get('falta')
+  getFalta() {
+    return this.produtosService.getFalta()
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProdutoDto: UpdateProdutoDto) {
-    return this.produtosService.update(+id, updateProdutoDto);
+  @ProddutoDecoratorUpdate()
+  update(@Param('produto_id') produto_id: string, @Body() produto: UpdateProdutoDto) {
+    return this.produtosService.update(produto_id, produto)
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.produtosService.remove(+id);
-  }
+
 }

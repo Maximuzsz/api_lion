@@ -62,7 +62,7 @@ model Produtos {
   status       Boolean @default(true)
   usuario_id   String
 
-  cliente      Usuario  @relation(fields: [usuario_id], references: [usuario_id])
+  usuario      Usuario  @relation(fields: [usuario_id], references: [usuario_id])
   ItensCompra  ItensCompra[]
 }
 

@@ -10,9 +10,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { ProdutosModule } from './produtos/produtos.module';
 import { ClienteModule } from './cliente/cliente.module';
+import { ComprasClientesModule } from './compras-clientes/compras-clientes.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsuarioModule, EmpresaModule, CaixaDiarioModule, ProdutosModule, ClienteModule],
+  imports: [PrismaModule, AuthModule, UsuarioModule, EmpresaModule, CaixaDiarioModule, ProdutosModule, ClienteModule, ComprasClientesModule],
   controllers: [AppController],
   providers: [
     AppService,

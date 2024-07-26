@@ -86,7 +86,8 @@ model Clientes {
 model ComprasCliente {
   compra_id   String @id @default(uuid())
   cliente_id  String
-  data_compra DateTime
+  data_compra DateTime @default(now())
+  status Boolean 
   usuario_id String
 
   usuario Usuario @relation(fields: [usuario_id], references: [usuario_id])

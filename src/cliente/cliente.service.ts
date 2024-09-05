@@ -8,6 +8,7 @@ export class ClienteService {
   constructor(private readonly prisma:PrismaService)  {} 
 
   async create(clienteCreateDto: CreateClienteDto){
+    console.log(clienteCreateDto)
     const data = {
       ...clienteCreateDto,
     }

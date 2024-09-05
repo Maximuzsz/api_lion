@@ -25,7 +25,7 @@ export const UsuarioCreateDecorator  =() =>{
                     description: 'senha do usuário.',
                     example: 'Abc123',
                 },
-                companyId: {
+                empresa_id: {
                     type: 'string',
                     description: 'id da empresa.',
                     example: 'Abc123',

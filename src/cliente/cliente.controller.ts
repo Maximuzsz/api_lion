@@ -1,17 +1,46 @@
-import { Body, Get, Param } from '@nestjs/common';
+import { Body, Get, HttpException, HttpStatus, Param, Post, Request } from '@nestjs/common';
 import { ClienteService } from './cliente.service';
 import { ClienteDecorator } from './decorators/cliente-decorator';
 import { ClienteCreateDecorator } from './decorators/cliente-decorator-create';
 import { ClienteDecoratorUpdate } from './decorators/cliente-decorator-update';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
+import { Logger } from "@nestjs/common";
 
 @ClienteDecorator()
 export class ClienteController {
   constructor(private readonly clienteService: ClienteService) {}
+  private readonly logger = new Logger(ClienteController.name);
+
   @ClienteCreateDecorator()
-  create(cliente:CreateClienteDto) {
-    return this.clienteService.create(cliente)
+  @Post()
+  async create(@Body() cliente: CreateClienteDto) {
+    try {
+      this.logger.log('Recebendo dados para criar um novo cliente', JSON.stringify(cliente));
+
+      // Validação extra se necessário
+      if (!cliente.nome || !cliente.usuario_id) {
+        this.logger.warn('Dados inválidos fornecidos para criação do cliente');
+        throw new HttpException('Nome e ID do usuário são obrigatórios.', HttpStatus.BAD_REQUEST);
+      }
+
+      const novoCliente = await this.clienteService.create(cliente);
+
+      this.logger.log(`Cliente criado com sucesso`);
+      return {
+        message: 'Cliente criado com sucesso',
+        data: novoCliente,
+      };
+    } catch (error) {
+      this.logger.error('Erro ao criar cliente', error.stack);
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Ocorreu um erro ao criar o cliente. Tente novamente mais tarde.',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get()

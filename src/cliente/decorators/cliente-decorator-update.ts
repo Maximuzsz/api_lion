@@ -3,7 +3,7 @@ import { ApiBody, ApiOperation } from '@nestjs/swagger';
 
 export const ClienteDecoratorUpdate = () => {
     return applyDecorators(
-        Put('update'),
+        Put('update:cliente_id'),
         ApiOperation({
             summary: 'altera os dados do cliente',
           }),

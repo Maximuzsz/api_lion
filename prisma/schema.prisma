@@ -39,12 +39,15 @@ model Usuario {
 }
 
 model caixaDiario{
-
   caixa_id String @id @default(uuid())
-  valorCartao Float
+  valorCartaoMaquina1 Float
+  valorCartaoMaquina2 Float
   valorDinheiro Float
   valorPix Float
-  troco Float
+  valorentrada Float //valor iniciado no dio
+  valorFinal   Float //valor Fim do dia
+  saida Float
+  totalDiario Float
   dataLancamento DateTime @default(now())
   empresa_id String
   usuario_id String

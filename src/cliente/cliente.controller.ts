@@ -49,8 +49,33 @@ export class ClienteController {
   }
 
   @ClienteDecoratorUpdate()
-  update(@Param('cliente_id') cliente_id: string, @Body() cliente: UpdateClienteDto){
-    return this.clienteService.update(cliente_id,cliente)
+  async update(@Param('cliente_id') cliente_id: string, @Body() cliente: UpdateClienteDto){
+    try {
+      this.logger.log('Recebendo dados para atualizar o cliente', JSON.stringify(cliente));
+
+      // Validação extra se necessário
+      if (!cliente.nome || !cliente.usuario_id) {
+        this.logger.warn('Dados inválidos fornecidos para atualizar o cliente');
+        throw new HttpException('Nome e ID do usuário são obrigatórios.', HttpStatus.BAD_REQUEST);
+      }
+
+      const novoCliente = await this.clienteService.update(cliente_id,cliente);
+
+      this.logger.log(`Cliente atualizado com sucesso`);
+      return {
+        message: 'Cliente atualizado com sucesso',
+        data: novoCliente,
+      };
+    } catch (error) {
+      this.logger.error('Erro ao atualizar cliente', error.stack);
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Ocorreu um erro ao atualizar o cliente. Tente novamente mais tarde.',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
 

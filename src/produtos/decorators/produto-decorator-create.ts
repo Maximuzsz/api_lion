@@ -18,9 +18,14 @@ export const ProdutoCreateDecorator  =() =>{
                     description: 'Preço do produto.',
                     example: '2.99',
                 },
+                marca: {
+                    type: 'string',
+                    description: 'marca do produto',
+                    example: 'true',
+                },
                 status: {
                     type: 'string',
-                    description: 'se está em falta pu não',
+                    description: 'se está em falta ou não',
                     example: 'true',
                 },
                 usuario_id: {

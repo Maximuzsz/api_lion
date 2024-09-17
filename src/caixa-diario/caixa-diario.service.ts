@@ -8,11 +8,21 @@ export class CaixaDiarioService {
     constructor(private readonly prisma: PrismaService) {}
 
     async create(createCaixaDiarioDto: CreateCaixaDiarioDto) {
-        const data = {
-          ...createCaixaDiarioDto,
-        };
+      const data = {
+        valorCartaoMaquina1: createCaixaDiarioDto.valorCartaoMaquina1,
+        valorCartaoMaquina2:createCaixaDiarioDto.valorCartaoMaquina2,
+        valorDinheiro:createCaixaDiarioDto.valorDinheiro,
+        valorPix:createCaixaDiarioDto.valorPix,
+        valorentrada:createCaixaDiarioDto.valorentrada,//valor iniciado no dio
+        valorFinal:createCaixaDiarioDto.valorFinal, //valor Fim do dia
+        saida:createCaixaDiarioDto.saida,
+        totalDiario:createCaixaDiarioDto.totalDiario,
+        dataLancamento: new Date(),
+        empresa_id:createCaixaDiarioDto.empresa_id,
+        usuario_id:createCaixaDiarioDto.usuario_id
+      };
         return  await this.prisma.caixaDiario.create({ data });
-      }
+    }
     
       async findAll() {
         return await this.prisma.caixaDiario.findMany();
@@ -27,10 +37,10 @@ export class CaixaDiarioService {
       async update(caixa_id:string, update:UpdateCaixaDiarioDto) {
         return await this.prisma.caixaDiario.update({
           data: {
-            valorCartao: update.valorCartao,
+            valorCartaoMaquina1: update.valorCartaoMaquina1,
             valorDinheiro: update.valorDinheiro,
             valorPix: update.valorPix,
-            troco:update.troco,
+            valorentrada:update.valorentrada,
           },
           where: { caixa_id: caixa_id },
         });

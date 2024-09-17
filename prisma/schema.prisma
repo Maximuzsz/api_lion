@@ -62,6 +62,7 @@ model Produtos {
   produto_id   String @id @default(uuid())
   nome_produto String
   preco        Float?
+  marca        String?
   status       Boolean @default(true)
   usuario_id   String
 

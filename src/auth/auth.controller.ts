@@ -1,19 +1,12 @@
 import {
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Request,
-  UseGuards,
+  Request
 } from '@nestjs/common';
+import { Usuario } from '@prisma/client';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
-import { AuthRequest } from './models/AuthRequest';
-import { IsPublic } from './decorators/is-public.decorator';
 import { AuthDecorator } from './decorators/auth-decorator';
 import { AuthDecoratorLogin } from './decorators/auth-decorator-login';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { Usuario } from '@prisma/client';
+import { AuthRequest } from './models/AuthRequest';
 
 @AuthDecorator()
 export class AuthController {
@@ -24,10 +17,12 @@ export class AuthController {
     let token=  (await this.authService.login(req.user)).access_token;
     let id = user.usuario_id;
     let nome = user.name;
+    let empresa_id = user.empresa_id;
     return{
       token, 
       id,
-      nome
+      nome,
+      empresa_id
     }
   }
 }

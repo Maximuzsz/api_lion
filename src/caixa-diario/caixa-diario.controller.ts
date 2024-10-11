@@ -13,6 +13,7 @@ export class CaixaDiarioController {
 
   @CaixaCreateDecorator()
   create(@Body() createCaixaDiarioDto: CreateCaixaDiarioDto) {
+    console.log(createCaixaDiarioDto);
     return this.caixaDiarioService.create(createCaixaDiarioDto);
   }
 

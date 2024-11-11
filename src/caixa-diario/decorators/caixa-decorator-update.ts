@@ -3,7 +3,7 @@ import { ApiBody, ApiOperation } from '@nestjs/swagger';
 
 export const CaixaDecoratorUpdate = () => {
     return applyDecorators(
-        Put('update'),
+        Put('update:caixa_id'),
         ApiOperation({
             summary: 'altera os dados da vendda',
           }),
@@ -11,25 +11,60 @@ export const CaixaDecoratorUpdate = () => {
             schema: {
               type: 'object',
               properties: {
-                valorCartao: {
-                    type: 'string',
+                valorCartaoMaquina1: {
+                  type: 'number',
+                  description: '',
+                  example: '12.78',
+                },
+                valorCartaoMaquina2: {
+                    type: 'number',
                     description: '',
-                    example: 'Jose da Silva',
+                    example: '12.78',
                 },
                 valorDinheiro: {
-                    type: 'string',
-                    description: 'login usuário.',
-                    example: 'teste2333',
+                    type: 'number',
+                    description: '',
+                    example: '12.78',
                 },
                 valorPix: {
-                    type: 'string',
-                    description: 'senha do usuário.',
-                    example: 'Abc123',
+                    type: 'number',
+                    description: '',
+                    example: '12.78',
                 },
-                troco: {
+                valorentrada: {
+                    type: 'number',
+                    description: '',
+                    example: '12.78',
+                },
+                valorFinal: {
+                    type: 'number',
+                    description: '',
+                    example: '12.78',
+                },
+                saida: {
+                    type: 'number',
+                    description: '',
+                    example: '12.78',
+                },
+                totalDiario: {
+                    type: 'number',
+                    description: '',
+                    example: '12.78',
+                },
+                empresa_id: {
                     type: 'string',
                     description: 'id da empresa.',
                     example: 'Abc123',
+                },
+                usuario_id: {
+                    type: 'string',
+                    description: 'id do usuario.',
+                    example: 'Abc123',
+                },
+                fechado: {
+                    type: 'boolean',
+                    description: '',
+                    example: 'false',
                 },
               },
             },

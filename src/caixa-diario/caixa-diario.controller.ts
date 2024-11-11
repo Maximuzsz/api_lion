@@ -24,7 +24,7 @@ export class CaixaDiarioController {
 
 
   @CaixaDecoratorUpdate()
-  update(@Param('usuario_id') usuario_id: string, @Body() caixa: UpdateCaixaDiarioDto) {
-    return this.update(usuario_id, caixa)
+  update(@Param('caixa_id') caixa_id: string, @Body() caixa: UpdateCaixaDiarioDto) {
+    return this.caixaDiarioService.update(caixa_id, caixa)
   }
 }

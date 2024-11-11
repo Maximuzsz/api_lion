@@ -52,9 +52,10 @@ export class ClienteController {
   async update(@Param('cliente_id') cliente_id: string, @Body() cliente: UpdateClienteDto){
     try {
       this.logger.log('Recebendo dados para atualizar o cliente', JSON.stringify(cliente));
+      this.logger.log(cliente.nome);
 
       // Validação extra se necessário
-      if (!cliente.nome || !cliente.usuario_id) {
+      if (!cliente.nome) {
         this.logger.warn('Dados inválidos fornecidos para atualizar o cliente');
         throw new HttpException('Nome e ID do usuário são obrigatórios.', HttpStatus.BAD_REQUEST);
       }

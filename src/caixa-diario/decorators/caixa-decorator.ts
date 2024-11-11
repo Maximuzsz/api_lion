@@ -4,9 +4,9 @@ import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
 
 export const CaixaDecorator =() =>{
     return applyDecorators(
-        Controller('vendas'),
+        Controller('caixa'),
         ApiBearerAuth(),
         UseGuards(JwtAuthGuard),
-        ApiTags('Vendas')
+        ApiTags('Caixa')
     );
 }

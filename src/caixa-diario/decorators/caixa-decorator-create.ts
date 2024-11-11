@@ -58,6 +58,11 @@ export const CaixaCreateDecorator  =() =>{
                     description: 'id do usuario.',
                     example: 'Abc123',
                 },
+                fechado: {
+                    type: 'boolean',
+                    description: '',
+                    example: 'false',
+                },
               },
             },
         }),

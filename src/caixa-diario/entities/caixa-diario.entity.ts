@@ -10,4 +10,5 @@ export class CaixaDiario {
     totalDiario?:number;
     empresa_id?:string;
     usuario_id?:string;
+    fechado?: Boolean
 }

@@ -19,7 +19,8 @@ export class CaixaDiarioService {
         totalDiario:createCaixaDiarioDto.totalDiario,
         dataLancamento: new Date(),
         empresa_id:createCaixaDiarioDto.empresa_id,
-        usuario_id:createCaixaDiarioDto.usuario_id
+        usuario_id:createCaixaDiarioDto.usuario_id,
+        fechado: createCaixaDiarioDto.fechado
       };
         return  await this.prisma.caixaDiario.create({ data });
     }
@@ -35,12 +36,18 @@ export class CaixaDiarioService {
       }
     
       async update(caixa_id:string, update:UpdateCaixaDiarioDto) {
+        console.log(update)
         return await this.prisma.caixaDiario.update({
           data: {
             valorCartaoMaquina1: update.valorCartaoMaquina1,
-            valorDinheiro: update.valorDinheiro,
-            valorPix: update.valorPix,
-            valorentrada:update.valorentrada,
+            valorCartaoMaquina2:update.valorCartaoMaquina2,
+            valorDinheiro:update.valorDinheiro,
+            valorPix:update.valorPix,
+            valorentrada:update.valorentrada,//valor iniciado no dio
+            valorFinal:update.valorFinal, //valor Fim do dia
+            saida:update.saida,
+            totalDiario:update.totalDiario,
+            fechado: update.fechado
           },
           where: { caixa_id: caixa_id },
         });

@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsBoolean, IsNumber, IsString } from "class-validator";
 import { CaixaDiario } from "../entities/caixa-diario.entity";
 
 export class CreateCaixaDiarioDto extends CaixaDiario {
@@ -22,4 +22,6 @@ export class CreateCaixaDiarioDto extends CaixaDiario {
     empresa_id?:string;
     @IsString()
     usuario_id?:string;
+    @IsBoolean()
+    fechado?:boolean;
 }

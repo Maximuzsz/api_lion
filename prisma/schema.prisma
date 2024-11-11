@@ -51,6 +51,7 @@ model caixaDiario{
   dataLancamento DateTime @default(now())
   empresa_id String
   usuario_id String
+  fechado Boolean
 
   company Empresa @relation(fields: [empresa_id], references: [empresa_id])
   user Usuario @relation(fields: [usuario_id], references: [usuario_id])

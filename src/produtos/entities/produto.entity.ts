@@ -1,9 +1,9 @@
 export class Produto {
     produto_id?: string;
-    nome_produto: string;
+    nome_produto?: string;
     preco?:number;
     marca?: string;
-    status?: boolean;
+    status?: string;
     usuario_id: string;
 }
 

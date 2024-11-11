@@ -3,7 +3,7 @@ import { ApiBody, ApiOperation } from '@nestjs/swagger';
 
 export const ProddutoDecoratorUpdate = () => {
     return applyDecorators(
-        Put('update'),
+        Put('update:produto_id'),
         ApiOperation({
             summary: 'altera os dados do produto',
           }),

@@ -4,6 +4,7 @@ import { ApiBody, ApiOperation } from "@nestjs/swagger"
 export const ProdutoCreateDecorator  =() =>{
     return applyDecorators(
         ApiOperation({ summary: "Criação do produto" }),
+        Post(),
         ApiBody({
             schema: {
               type: 'object',
@@ -26,7 +27,7 @@ export const ProdutoCreateDecorator  =() =>{
                 status: {
                     type: 'string',
                     description: 'se está em falta ou não',
-                    example: 'true',
+                    example: 'EM_FALTA',
                 },
                 usuario_id: {
                     type: 'string',
@@ -36,6 +37,6 @@ export const ProdutoCreateDecorator  =() =>{
               },
             },
         }),
-        Post(),
+        
     )
 }

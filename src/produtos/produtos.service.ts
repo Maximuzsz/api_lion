@@ -18,16 +18,6 @@ export class ProdutosService {
     return  await this.prisma.produtos.findMany();
   }
 
-  async getFalta() {
-    return await this.prisma.produtos.findMany(
-      {
-        where: {
-          status: false
-        }
-      }
-    )
-  }
-
   async update(produto_id: string, produto: UpdateProdutoDto) {
     return await this.prisma.produtos.update({
       data: {

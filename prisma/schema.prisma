@@ -34,8 +34,8 @@ model Usuario {
   vendaDiaria caixaDiario[]
   clientes Clientes[]
   produtos Produtos[]
-  comprasCliente ComprasCliente[]
-  itensCompra ItensCompra[]
+  comprasCliente Compra[]
+  itensCompra ItemCompra[]
 }
 
 model caixaDiario{
@@ -64,15 +64,12 @@ model Produtos {
   nome_produto String
   preco        Float?
   marca        String?
-  status       Boolean @default(true)
+  status       String 
   usuario_id   String
 
   usuario      Usuario  @relation(fields: [usuario_id], references: [usuario_id])
-  ItensCompra  ItensCompra[]
+  ItensCompra  ItemCompra[]
 }
-
-
-
 
 
 model Clientes {
@@ -84,33 +81,32 @@ model Clientes {
   usuario_id String
 
   user Usuario @relation(fields: [usuario_id], references: [usuario_id])
-  Compras    ComprasCliente[]
+  Compras    Compra[]
 }
 
 
-model ComprasCliente {
-  compra_id   String @id @default(uuid())
-  cliente_id  String
-  data_compra DateTime @default(now())
-  status Boolean 
+model Compra {
+  id          String @id @default(uuid())
+  cliente_id   String
+  cliente     Clientes      @relation(fields: [cliente_id], references: [cliente_id])
+  itens       ItemCompra[]
+  dataCompra  DateTime     @default(now())
+  total       Float
+  valorPago   Float         @default(0)
   usuario_id String
-
-  usuario Usuario @relation(fields: [usuario_id], references: [usuario_id])
-  cliente     Clientes  @relation(fields: [cliente_id], references: [cliente_id])
-  ItensCompra ItensCompra[]
+  user Usuario @relation(fields: [usuario_id], references: [usuario_id])
 }
 
-
-
-model ItensCompra {
-  item_id        String @id @default(uuid())
-  compra_id      String
-  produto_id     String
-  usuario_id     String
-  quantidade     Int
-  preco_unitario Float
-
-  usuario Usuario @relation(fields: [usuario_id], references: [usuario_id])
-  comprasCliente        ComprasCliente  @relation(fields: [compra_id], references: [compra_id])
-  produto       Produtos @relation(fields: [produto_id], references: [produto_id])
+model ItemCompra {
+  id         String @id @default(uuid())
+  compraId   String
+  compra     Compra   @relation(fields: [compraId], references: [id])
+  produto_id  String
+  produto    Produtos  @relation(fields: [produto_id], references: [produto_id])
+  quantidade Int
+  precoUnitario Float
+  precoTotal  Float   @default(0)
+  requisitor_nome String
+  usuario_id String
+  user Usuario @relation(fields: [usuario_id], references: [usuario_id])
 }

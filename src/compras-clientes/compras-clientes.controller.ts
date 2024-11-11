@@ -11,8 +11,11 @@ export class ComprasClientesController {
   constructor(private readonly comprasClientesService: ComprasClientesService) {}
 
   @ComprasCreateDecorator()
-  create(compra:CreateComprasClienteDto){
-    return this.comprasClientesService.create(compra)
+  create(
+    @Body('clienteId') clienteId: string,
+    @Body('itens') itens: { produto_Id: string; requisitor_nome: string; quantidade: number;  }[]
+  ){
+    return this.comprasClientesService.create(clienteId, itens)
   }
 
   @Get()
@@ -23,11 +26,6 @@ export class ComprasClientesController {
   @Get('/:cliente_id')
   getContasClientes(cliente_id: string){
     return this.getContasClientes(cliente_id)
-  }
-
-  @ComprasDecoratorUpdate()
-  update(@Param('compra_id') compra_id: string, @Body() compra: UpdateComprasClienteDto){
-    return this.comprasClientesService.update(compra_id, compra)
   }
 
 

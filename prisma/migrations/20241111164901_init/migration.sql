@@ -1,6 +1,3 @@
--- CreateEnum
-CREATE TYPE "Status" AS ENUM ('EM_FALTA', 'EM_ESTOQUE', 'PEDIDO');
-
 -- CreateTable
 CREATE TABLE "Empresa" (
     "empresa_id" TEXT NOT NULL,
@@ -46,7 +43,7 @@ CREATE TABLE "Produtos" (
     "nome_produto" TEXT NOT NULL,
     "preco" DOUBLE PRECISION,
     "marca" TEXT,
-    "status" "Status" NOT NULL DEFAULT 'EM_ESTOQUE',
+    "status" BOOLEAN NOT NULL DEFAULT true,
     "usuario_id" TEXT NOT NULL,
 
     CONSTRAINT "Produtos_pkey" PRIMARY KEY ("produto_id")
@@ -65,26 +62,28 @@ CREATE TABLE "Clientes" (
 );
 
 -- CreateTable
-CREATE TABLE "ComprasCliente" (
-    "compra_id" TEXT NOT NULL,
+CREATE TABLE "Compra" (
+    "id" TEXT NOT NULL,
     "cliente_id" TEXT NOT NULL,
-    "data_compra" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "status" BOOLEAN NOT NULL,
+    "dataCompra" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "total" DOUBLE PRECISION NOT NULL,
     "usuario_id" TEXT NOT NULL,
 
-    CONSTRAINT "ComprasCliente_pkey" PRIMARY KEY ("compra_id")
+    CONSTRAINT "Compra_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "ItensCompra" (
-    "item_id" TEXT NOT NULL,
-    "compra_id" TEXT NOT NULL,
+CREATE TABLE "ItemCompra" (
+    "id" TEXT NOT NULL,
+    "compraId" TEXT NOT NULL,
     "produto_id" TEXT NOT NULL,
-    "usuario_id" TEXT NOT NULL,
     "quantidade" INTEGER NOT NULL,
-    "preco_unitario" DOUBLE PRECISION NOT NULL,
+    "precoUnitario" DOUBLE PRECISION NOT NULL,
+    "precoTotal" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "requisitor_nome" TEXT NOT NULL,
+    "usuario_id" TEXT NOT NULL,
 
-    CONSTRAINT "ItensCompra_pkey" PRIMARY KEY ("item_id")
+    CONSTRAINT "ItemCompra_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -109,16 +108,16 @@ ALTER TABLE "Produtos" ADD CONSTRAINT "Produtos_usuario_id_fkey" FOREIGN KEY ("u
 ALTER TABLE "Clientes" ADD CONSTRAINT "Clientes_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("usuario_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ComprasCliente" ADD CONSTRAINT "ComprasCliente_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("usuario_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Compra" ADD CONSTRAINT "Compra_cliente_id_fkey" FOREIGN KEY ("cliente_id") REFERENCES "Clientes"("cliente_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ComprasCliente" ADD CONSTRAINT "ComprasCliente_cliente_id_fkey" FOREIGN KEY ("cliente_id") REFERENCES "Clientes"("cliente_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Compra" ADD CONSTRAINT "Compra_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("usuario_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ItensCompra" ADD CONSTRAINT "ItensCompra_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("usuario_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ItemCompra" ADD CONSTRAINT "ItemCompra_compraId_fkey" FOREIGN KEY ("compraId") REFERENCES "Compra"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ItensCompra" ADD CONSTRAINT "ItensCompra_compra_id_fkey" FOREIGN KEY ("compra_id") REFERENCES "ComprasCliente"("compra_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ItemCompra" ADD CONSTRAINT "ItemCompra_produto_id_fkey" FOREIGN KEY ("produto_id") REFERENCES "Produtos"("produto_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ItensCompra" ADD CONSTRAINT "ItensCompra_produto_id_fkey" FOREIGN KEY ("produto_id") REFERENCES "Produtos"("produto_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ItemCompra" ADD CONSTRAINT "ItemCompra_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("usuario_id") ON DELETE RESTRICT ON UPDATE CASCADE;

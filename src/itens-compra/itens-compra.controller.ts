@@ -10,15 +10,5 @@ export class ItensCompraController {
   constructor(private readonly itensCompraService: ItensCompraService) {}
 
 
-  @ItensCreateDecorator()
-  crate(itens: CreateItensCompraDto){
-    return this.itensCompraService.create(itens)
-  }
-
-  
-  @Get(':compra_id')
-  getCompra(compra_id: string){
-    return this.itensCompraService.getItens(compra_id)
-  }
 
 }

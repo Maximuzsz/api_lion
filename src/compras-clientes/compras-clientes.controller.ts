@@ -1,14 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Get, Logger, Param } from '@nestjs/common';
 import { ComprasClientesService } from './compras-clientes.service';
-import { CreateComprasClienteDto } from './dto/create-compras-cliente.dto';
-import { UpdateComprasClienteDto } from './dto/update-compras-cliente.dto';
 import { CompraDecorator } from './decorators/compras-decorator';
 import { ComprasCreateDecorator } from './decorators/compras-decorator-create';
-import { ComprasDecoratorUpdate } from './decorators/produto-decorator-update';
+import { ComprasDecoratorGetAll } from './decorators/compras-decorator-get';
 
 @CompraDecorator()
 export class ComprasClientesController {
   constructor(private readonly comprasClientesService: ComprasClientesService) {}
+  private readonly logger = new Logger(ComprasClientesController.name);
 
   @ComprasCreateDecorator()
   create(
@@ -18,14 +17,14 @@ export class ComprasClientesController {
     return this.comprasClientesService.create(clienteId, itens)
   }
 
-  @Get()
+  @ComprasDecoratorGetAll()
   getAll(){
-    return this.comprasClientesService.getAll;
+    return this.comprasClientesService.getAll();
   }
 
-  @Get('/:cliente_id')
-  getContasClientes(cliente_id: string){
-    return this.getContasClientes(cliente_id)
+  @Get(':cliente_id')
+  async getContasClientes(@Param('cliente_id') cliente_id: string){
+    return await this.comprasClientesService.getContasCliente(cliente_id)
   }
 
 

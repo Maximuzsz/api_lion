@@ -53,7 +53,25 @@ export class ComprasClientesService {
   }
 
   async getAll(){
-    return await this.prisma.compra.findMany();
+    const contas = await this.prisma.compra.findMany({
+      include: {
+        cliente: true, // Inclui os dados do cliente associado
+        user: true,    // Inclui os dados do usuário (caso necessário)
+      },
+    });
+
+    const contasFormatadas = contas.map(compra => ({
+      id: compra.id,
+      cliente_id: compra.cliente_id,
+      dataCompra: compra.dataCompra,
+      total: compra.total,
+      valorPago: compra.valorPago,
+      usuario_id: compra.usuario_id,
+      usuario_name: compra.user.userName,
+      nome_cliente: compra.cliente.nome
+    }));
+  
+    return contasFormatadas;
   }
 
   async getContasCliente(cliente_id: string) {

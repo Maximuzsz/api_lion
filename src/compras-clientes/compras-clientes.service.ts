@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PDFDocument, StandardFonts } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import { ItensCompra } from 'src/itens-compra/entities/itens-compra.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
@@ -167,52 +167,75 @@ export class ComprasClientesService {
   
       // Configura a tabela
       let tableStartY = logoY - 70;
-      const tableLineHeight = 20;
-  
-      // Desenha cabeçalho da tabela
-      const headers = ["Produto", "Marca", "Quantidade", "Valor Unitário", "Valor Total"];
-      headers.forEach((header, i) => {
-        page.drawText(header, {
-          x: margin + i * 100,
-          y: tableStartY,
-          size: fontSize,
+    const tableLineHeight = 20;
+    const tableColumnWidth = 100;
+
+    // Fundo cinza para o cabeçalho
+    page.drawRectangle({
+      x: margin,
+      y: tableStartY - 10,
+      width: width - 2 * margin,
+      height: tableLineHeight,
+      color: rgb(0.9, 0.9, 0.9),
+    });
+
+    // Desenha cabeçalho da tabela com texto em negrito
+    const headers = ["Produto", "Marca", "Quantidade", "Valor Unitário", "Valor Total"];
+    headers.forEach((header, i) => {
+      page.drawText(header, {
+        x: margin + i * tableColumnWidth,
+        y: tableStartY,
+        size: fontSize,
+        font,
+      });
+    });
+
+    tableStartY -= tableLineHeight;
+
+    // Adiciona os itens na tabela com divisões
+    const regularFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    data.itens.forEach((item, index) => {
+      const { produto, quantidade, precoUnitario, precoTotal } = item;
+
+      // Adiciona linha divisória entre os itens
+      if (index > 0) {
+        page.drawLine({
+          start: { x: margin, y: tableStartY + tableLineHeight },
+          end: { x: width - margin, y: tableStartY + tableLineHeight },
+          thickness: 0.5,
+          color: rgb(0.8, 0.8, 0.8),
+        });
+      }
+
+      const row = [
+        produto.nome_produto,
+        produto.marca || "N/A",
+        quantidade.toString(),
+        `R$ ${precoUnitario.toFixed(2)}`,
+        `R$ ${precoTotal.toFixed(2)}`,
+      ];
+
+      row.forEach((text, i) => {
+        page.drawText(text, {
+          x: margin + i * tableColumnWidth,
+          y: tableStartY-5,
+          size: fontSize - 2,
+          font: regularFont,
         });
       });
-  
-      tableStartY -= tableLineHeight;
-  
-      // Adiciona os itens na tabela
-      data.itens.forEach((item) => {
-        const { produto, quantidade, precoUnitario, precoTotal } = item;
-  
-        const row = [
-          produto.nome_produto,
-          produto.marca || "N/A",
-          quantidade.toString(),
-          `R$ ${precoUnitario.toFixed(2)}`,
-          `R$ ${precoTotal.toFixed(2)}`,
-        ];
-  
-        row.forEach((text, i) => {
-          page.drawText(text, {
-            x: margin + i * 100,
-            y: tableStartY,
-            size: fontSize - 2,
-          });
-        });
-  
-        tableStartY -= tableLineHeight;
+
+      tableStartY -= tableLineHeight+10;
       });
-  
+
       // Adiciona o valor total da compra no final da tabela
       const totalText = `Total da Compra: R$ ${data.total.toFixed(2)}`;
       page.drawText(totalText, {
-        x: margin +300,
+        x: margin,
         y: tableStartY - 20,
         size: fontSize,
         font,
       });
-  
+    
       // Salva o PDF
       const pdfBytes = await pdfDoc.save();
     return pdfBytes;

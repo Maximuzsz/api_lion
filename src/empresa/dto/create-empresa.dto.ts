@@ -6,4 +6,10 @@ export class CreateEmpresaDto extends Empresa{
     name: string;
     @IsString()
     email: string;
+    @IsString()
+    cnpj: string;
+    @IsString()
+    contato: string;
+    @IsString()
+    endereco: string;
 }

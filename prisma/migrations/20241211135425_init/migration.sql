@@ -2,7 +2,10 @@
 CREATE TABLE "Empresa" (
     "empresa_id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "cnpj" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "contato" TEXT NOT NULL,
+    "endereco" TEXT NOT NULL,
 
     CONSTRAINT "Empresa_pkey" PRIMARY KEY ("empresa_id")
 );
@@ -43,7 +46,7 @@ CREATE TABLE "Produtos" (
     "nome_produto" TEXT NOT NULL,
     "preco" DOUBLE PRECISION,
     "marca" TEXT,
-    "status" BOOLEAN NOT NULL DEFAULT true,
+    "status" TEXT NOT NULL,
     "usuario_id" TEXT NOT NULL,
 
     CONSTRAINT "Produtos_pkey" PRIMARY KEY ("produto_id")
@@ -67,6 +70,7 @@ CREATE TABLE "Compra" (
     "cliente_id" TEXT NOT NULL,
     "dataCompra" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "total" DOUBLE PRECISION NOT NULL,
+    "valorPago" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "usuario_id" TEXT NOT NULL,
 
     CONSTRAINT "Compra_pkey" PRIMARY KEY ("id")
@@ -88,6 +92,9 @@ CREATE TABLE "ItemCompra" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Empresa_email_key" ON "Empresa"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Empresa_cnpj_key" ON "Empresa"("cnpj");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Usuario_userName_key" ON "Usuario"("userName");

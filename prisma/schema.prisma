@@ -15,11 +15,11 @@ model Empresa {
   empresa_id String @id @default(uuid())
   email String @unique
   cnpj String @unique
-  name String 
-  contato String @unique
+  name String  
+  contato String
   endereco String
 
-
+  
   usuario Usuario[]
   vendaDiaria caixaDiario[]
 }

@@ -12,14 +12,29 @@ export const EmpresaCreateDecorator  =() =>{
               properties: {
                 name: {
                     type: 'string',
-                    description: 'nome do usuário.',
+                    description: 'nome da empresa.',
                     example: 'Jose da Silva',
                 },
                 email: {
                     type: 'string',
-                    description: 'login usuário.',
+                    description: 'email da empresa.',
                     example: 'teste2333',
-                }
+                },
+                cnpj: {
+                    type: 'string',
+                    description: 'cnpj da empresa.',
+                    example: '444.4474.444.44',
+                },
+                contato: {
+                    type: 'string',
+                    description: 'telefone de contato.',
+                    example: '6299999999',
+                },
+                endereco: {
+                    type: 'string',
+                    description: 'endereço da empresa.',
+                    example: 'avenida 123',
+                },
               },
             },
         }),

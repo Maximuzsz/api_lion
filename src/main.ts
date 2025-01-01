@@ -2,9 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import * as express from 'express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const server = express();
+  const app = await NestFactory.create(AppModule,new ExpressAdapter(server));
 
   const config = new DocumentBuilder()
     .setTitle('Ecossistema Lion')
@@ -23,9 +26,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  app.enableCors();
-
-  await app.listen(3000);
+  
+  app.enableCors(); // Se necessário
+  await app.init();
+  server.listen(3000);
 }
 
 bootstrap();

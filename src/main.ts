@@ -7,18 +7,20 @@ import * as express from 'express';
 
 async function bootstrap() {
   const server = express();
-  const app = await NestFactory.create(AppModule,new ExpressAdapter(server));
+  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
 
+  // Configuração do Swagger
   const config = new DocumentBuilder()
     .setTitle('Ecossistema Lion')
-    .setDescription('')
+    .setDescription('API do Ecossistema Lion')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('', app, document);
-  // Pipes
+  SwaggerModule.setup('api-docs', app, document);
+
+  // Configuração de validação global
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -26,10 +28,19 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  
-  app.enableCors(); // Se necessário
+
+  // Habilitar CORS, se necessário
+  app.enableCors();
+
+  // Inicializar a aplicação
   await app.init();
-  await app.listen(process.env.PORT || 5959);
+
+  // Iniciar o servidor
+  const port = process.env.PORT || 5959;
+  await app.listen(port, () => {
+    console.log(`🚀 API rodando em http://localhost:${port}`);
+    console.log(`📚 Swagger em http://localhost:${port}/api-docs`);
+  });
 }
 
 bootstrap();

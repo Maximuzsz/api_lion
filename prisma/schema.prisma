@@ -1,116 +1,99 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
-
 model Empresa {
-  empresa_id String @id @default(uuid())
-  email String @unique
-  cnpj String @unique
-  name String  
-  contato String
-  endereco String
-
-  
-  usuario Usuario[]
+  empresa_id  String        @id @default(uuid())
+  email       String        @unique
+  cnpj        String        @unique
+  name        String
+  contato     String
+  endereco    String
+  usuario     Usuario[]
   vendaDiaria caixaDiario[]
 }
 
 model Usuario {
-  usuario_id String @id @default(uuid())
-
-  userName    String @unique
-  password String
-
-  name String
-  empresa_id String 
-
-  empresa Empresa @relation(fields: [empresa_id], references: [empresa_id])
-
-  vendaDiaria caixaDiario[]
-  clientes Clientes[]
-  produtos Produtos[]
+  usuario_id     String        @id @default(uuid())
+  userName       String        @unique
+  password       String
+  name           String
+  empresa_id     String
+  clientes       Clientes[]
   comprasCliente Compra[]
-  itensCompra ItemCompra[]
+  itensCompra    ItemCompra[]
+  produtos       Produtos[]
+  empresa        Empresa       @relation(fields: [empresa_id], references: [empresa_id])
+  vendaDiaria    caixaDiario[]
 }
 
-model caixaDiario{
-  caixa_id String @id @default(uuid())
+model caixaDiario {
+  caixa_id            String   @id @default(uuid())
   valorCartaoMaquina1 Float
   valorCartaoMaquina2 Float
-  valorDinheiro Float
-  valorPix Float
-  valorentrada Float //valor iniciado no dio
-  valorFinal   Float //valor Fim do dia
-  saida Float
-  totalDiario Float
-  dataLancamento DateTime @default(now())
-  empresa_id String
-  usuario_id String
-  fechado Boolean
-
-  company Empresa @relation(fields: [empresa_id], references: [empresa_id])
-  user Usuario @relation(fields: [usuario_id], references: [usuario_id])
-
+  valorDinheiro       Float
+  valorPix            Float
+  valorentrada        Float
+  valorFinal          Float
+  saida               Float
+  totalDiario         Float
+  dataLancamento      DateTime @default(now())
+  empresa_id          String
+  usuario_id          String
+  fechado             Boolean
+  company             Empresa  @relation(fields: [empresa_id], references: [empresa_id])
+  user                Usuario  @relation(fields: [usuario_id], references: [usuario_id])
 }
 
-
 model Produtos {
-  produto_id   String @id @default(uuid())
+  produto_id   String       @id @default(uuid())
   nome_produto String
   preco        Float?
   marca        String?
-  status       String 
+  status       String
   usuario_id   String
-
-  usuario      Usuario  @relation(fields: [usuario_id], references: [usuario_id])
   ItensCompra  ItemCompra[]
+  usuario      Usuario      @relation(fields: [usuario_id], references: [usuario_id])
 }
 
-
 model Clientes {
-  cliente_id String @id @default(uuid())
+  cliente_id String   @id @default(uuid())
   nome       String
   cpf        String?
   telefone   String?
   endereco   String?
   usuario_id String
-
-  user Usuario @relation(fields: [usuario_id], references: [usuario_id])
+  user       Usuario  @relation(fields: [usuario_id], references: [usuario_id])
   Compras    Compra[]
 }
 
-
 model Compra {
-  id          String @id @default(uuid())
-  cliente_id   String
-  cliente     Clientes      @relation(fields: [cliente_id], references: [cliente_id])
-  itens       ItemCompra[]
-  dataCompra  DateTime     @default(now())
-  total       Float
-  valorPago   Float         @default(0)
+  id         String       @id @default(uuid())
+  cliente_id String
+  dataCompra DateTime     @default(now())
+  total      Float
+  valorPago  Float        @default(0)
   usuario_id String
-  user Usuario @relation(fields: [usuario_id], references: [usuario_id])
+  cliente    Clientes     @relation(fields: [cliente_id], references: [cliente_id])
+  user       Usuario      @relation(fields: [usuario_id], references: [usuario_id])
+  itens      ItemCompra[]
 }
 
 model ItemCompra {
-  id         String @id @default(uuid())
-  compraId   String
-  compra     Compra   @relation(fields: [compraId], references: [id])
-  produto_id  String
-  produto    Produtos  @relation(fields: [produto_id], references: [produto_id])
-  quantidade Int
-  precoUnitario Float
-  precoTotal  Float   @default(0)
+  id              String   @id @default(uuid())
+  compraId        String
+  produto_id      String
+  quantidade      Int
+  precoUnitario   Float
+  precoTotal      Float    @default(0)
   requisitor_nome String
-  usuario_id String
-  user Usuario @relation(fields: [usuario_id], references: [usuario_id])
+  usuario_id      String
+  compra          Compra   @relation(fields: [compraId], references: [id])
+  produto         Produtos @relation(fields: [produto_id], references: [produto_id])
+  user            Usuario  @relation(fields: [usuario_id], references: [usuario_id])
 }

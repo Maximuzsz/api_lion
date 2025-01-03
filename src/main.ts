@@ -41,6 +41,7 @@ async function bootstrap() {
     console.log(`🚀 API rodando em http://localhost:${port}`);
     console.log(`📚 Swagger em http://localhost:${port}/api-docs`);
   });
+  server.all('*', (req, res) => res.status(404).send('Rota não encontrada'));
 }
 
 bootstrap();

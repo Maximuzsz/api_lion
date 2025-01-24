@@ -22,6 +22,8 @@ export class ProdutosService {
     return await this.prisma.produtos.update({
       data: {
         preco: produto.preco,
+        nome_produto: produto.nome_produto,
+        marca: produto.marca,
         status:produto.status
       },
       where: { produto_id },

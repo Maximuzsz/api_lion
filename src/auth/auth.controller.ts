@@ -1,6 +1,4 @@
-import {
-  Request
-} from '@nestjs/common';
+import { Request } from '@nestjs/common';
 import { Usuario } from '@prisma/client';
 import { AuthService } from './auth.service';
 import { AuthDecorator } from './decorators/auth-decorator';
@@ -14,15 +12,15 @@ export class AuthController {
 
   @AuthDecoratorLogin()
   async login(@Request() req: AuthRequest, @CurrentUser() user: Usuario) {
-    let token=  (await this.authService.login(req.user)).access_token;
-    let id = user.usuario_id;
-    let nome = user.name;
-    let empresa_id = user.empresa_id;
-    return{
-      token, 
+    const token = (await this.authService.login(req.user)).access_token;
+    const id = user.usuario_id;
+    const nome = user.name;
+    const empresa_id = user.empresa_id;
+    return {
+      token,
       id,
       nome,
-      empresa_id
-    }
+      empresa_id,
+    };
   }
 }

@@ -1,10 +1,17 @@
-import { Body, Get, HttpException, HttpStatus, Logger, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Param,
+} from '@nestjs/common';
 import { ProdutoDecorator } from './decorators/produto-decorator';
-import { CreateProdutoDto } from './dto/create-produto.dto';
-import { ProdutosService } from './produtos.service';
-import { ProddutoDecoratorUpdate } from './decorators/produto-decorator-update';
-import { UpdateProdutoDto } from './dto/update-produto.dto';
 import { ProdutoCreateDecorator } from './decorators/produto-decorator-create';
+import { ProddutoDecoratorUpdate } from './decorators/produto-decorator-update';
+import { CreateProdutoDto } from './dto/create-produto.dto';
+import { UpdateProdutoDto } from './dto/update-produto.dto';
+import { ProdutosService } from './produtos.service';
 
 @ProdutoDecorator()
 export class ProdutosController {
@@ -14,13 +21,19 @@ export class ProdutosController {
   @ProdutoCreateDecorator()
   async create(@Body() produto: CreateProdutoDto) {
     try {
-      this.logger.log('Recebendo dados para cadastrar o produto', JSON.stringify(produto));
+      this.logger.log(
+        'Recebendo dados para cadastrar o produto',
+        JSON.stringify(produto),
+      );
       this.logger.log(produto.nome_produto);
 
       // Validação extra se necessário
       if (!produto.nome_produto) {
         this.logger.warn('Dados inválidos fornecidos para cadastrar produto');
-        throw new HttpException('Dados inválidos fornecidos para cadastrar produto.', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'Dados inválidos fornecidos para cadastrar produto.',
+          HttpStatus.BAD_REQUEST,
+        );
       }
 
       const novoProduto = await this.produtosService.create(produto);

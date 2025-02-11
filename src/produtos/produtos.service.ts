@@ -10,12 +10,11 @@ export class ProdutosService {
     const data = {
       ...createProdutoDto,
     };
-    return  await this.prisma.produtos.create({data});
+    return await this.prisma.produtos.create({ data });
   }
 
-
   async getAll() {
-    return  await this.prisma.produtos.findMany();
+    return await this.prisma.produtos.findMany();
   }
 
   async update(produto_id: string, produto: UpdateProdutoDto) {
@@ -24,12 +23,9 @@ export class ProdutosService {
         preco: produto.preco,
         nome_produto: produto.nome_produto,
         marca: produto.marca,
-        status:produto.status
+        status: produto.status,
       },
       where: { produto_id },
-    })
+    });
   }
-
-
-
 }

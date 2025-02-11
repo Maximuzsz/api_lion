@@ -5,34 +5,32 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ClienteService {
-  constructor(private readonly prisma:PrismaService)  {} 
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(clienteCreateDto: CreateClienteDto){
-    console.log(clienteCreateDto)
+  async create(clienteCreateDto: CreateClienteDto) {
+    console.log(clienteCreateDto);
     const data = {
       ...clienteCreateDto,
-    }
+    };
 
-    return await this.prisma.clientes.create({data})
+    return await this.prisma.clientes.create({ data });
   }
 
-  async getAll(){
-    return await this.prisma.clientes.findMany()
+  async getAll() {
+    return await this.prisma.clientes.findMany();
   }
 
-  async update(cliente_id: string,cliente:UpdateClienteDto){
+  async update(cliente_id: string, cliente: UpdateClienteDto) {
     return await this.prisma.clientes.update({
-      data:{
+      data: {
         nome: cliente.nome,
-        cpf:cliente.cpf,
-        endereco:cliente.endereco,
-        telefone:cliente.telefone,
+        cpf: cliente.cpf,
+        endereco: cliente.endereco,
+        telefone: cliente.telefone,
       },
-      where:{
-        cliente_id
-      }
-    })
+      where: {
+        cliente_id,
+      },
+    });
   }
-
 }
-;

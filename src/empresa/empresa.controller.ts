@@ -15,7 +15,7 @@ export class EmpresaController {
   }
 
   @EmpresaDecoratorGetAll()
-  findAll(){
+  findAll() {
     return this.empresaService.findAll();
   }
 }

@@ -48,7 +48,8 @@ export class PedidoService {
       produtos: pedido.produtos.map((p) => ({
         produtoId: p.produtoId,
         quantidade: p.quantidade,
-        detalhes: produtosMap.get(p.produtoId) || null, // Adiciona detalhes do produto
+        nome_produto: produtosMap.get(p.produtoId).nome_produto,
+        preco: produtosMap.get(p.produtoId).preco,
       })),
     }));
   }
@@ -117,5 +118,24 @@ export class PedidoService {
     }));
 
     return pedidosComProdutos;
+  }
+
+  async atualizarPedidoCompleto(
+    id: string,
+    pedidoAtualizado: {
+      clienteId: string;
+      produtos: { produtoId: string; quantidade: number }[];
+      valorPago: number;
+      status: string;
+    },
+  ): Promise<Pedido> {
+    const pedido = await this.pedidoModel.findById(id).exec();
+    if (!pedido) throw new NotFoundException('Pedido não encontrado');
+    // Atualizando os dados do pedido
+    pedido.clienteId = pedidoAtualizado.clienteId;
+    pedido.valorPago = pedidoAtualizado.valorPago;
+    pedido.status = pedidoAtualizado.status;
+    pedido.produtos = pedidoAtualizado.produtos; // Substitui a lista de produtos
+    return pedido.save();
   }
 }

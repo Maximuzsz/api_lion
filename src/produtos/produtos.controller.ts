@@ -48,7 +48,8 @@ export class ProdutosController {
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: 'Ocorreu um erro ao cadastrar produto. Tente novamente mais tarde.',
+          error:
+            'Ocorreu um erro ao cadastrar produto. Tente novamente mais tarde.',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
@@ -57,16 +58,25 @@ export class ProdutosController {
 
   @Get()
   getAll() {
-    return this.produtosService.getAll()
+    return this.produtosService.getAll();
   }
 
   @ProddutoDecoratorUpdate()
-  async update(@Param('produto_id') produto_id: string, @Body() produto: UpdateProdutoDto) {
+  async update(
+    @Param('produto_id') produto_id: string,
+    @Body() produto: UpdateProdutoDto,
+  ) {
     try {
-      this.logger.log('Recebendo dados para cadastrar o produto', JSON.stringify(produto));
+      this.logger.log(
+        'Recebendo dados para cadastrar o produto',
+        JSON.stringify(produto),
+      );
       this.logger.log(produto.nome_produto);
 
-      const novoProduto = await this.produtosService.update(produto_id,produto);
+      const novoProduto = await this.produtosService.update(
+        produto_id,
+        produto,
+      );
 
       this.logger.log(`Produto atualizado com sucesso`);
       return {
@@ -78,12 +88,11 @@ export class ProdutosController {
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: 'Ocorreu um erro ao atualizar produto. Tente novamente mais tarde.',
+          error:
+            'Ocorreu um erro ao atualizar produto. Tente novamente mais tarde.',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
-
-
 }

@@ -15,11 +15,13 @@ export class AuthController {
     const token = (await this.authService.login(req.user)).access_token;
     const id = user.usuario_id;
     const nome = user.name;
+    const username = user.userName;
     const empresa_id = user.empresa_id;
     return {
       token,
       id,
       nome,
+      username,
       empresa_id,
     };
   }

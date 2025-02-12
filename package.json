@@ -35,7 +35,6 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
     "fs": "^0.0.1-security",
-    "mongodb": "^6.13.0",
     "mongoose": "^8.10.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
